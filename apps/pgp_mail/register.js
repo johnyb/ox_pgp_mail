@@ -1,5 +1,5 @@
 define('pgp_mail/register',
-    [], function () {
+    ['pgp_mail/view-pgp'], function () {
     "use strict";
 
 });
