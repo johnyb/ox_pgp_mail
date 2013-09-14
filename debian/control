@@ -1,0 +1,19 @@
+Source: pgp_mail
+Section: non-free/web
+Priority: optional
+Maintainer: Julian Bäume <julian@svg4all.de>
+Build-Depends: debhelper (>= 8.0.0), open-xchange-appsuite-dev
+Standards-Version: 3.9.2
+
+Package: pgp_mail
+Architecture: all
+Depends: ${misc:Depends}, open-xchange-appsuite-manifest
+Description: Some extensions to better support PGP in Appsuite
+
+## Uncomment for multiple packages
+#Package: pgp_mail-static
+#Architecture: all
+#Depends: ${misc:Depends}, open-xchange-appsuite
+#Description: Some extensions to better support PGP in Appsuite
+# .
+# This package contains the static files for the theme.

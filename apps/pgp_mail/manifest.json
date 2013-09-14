@@ -1,0 +1,10 @@
+{
+    title: "PGP Support",
+    company: "",
+    category: "mail",
+    namespace: 'core',
+    settings: false,
+    requires: "webmail",
+    index: 100
+}
+
