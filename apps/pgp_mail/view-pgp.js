@@ -3,7 +3,7 @@ define('pgp_mail/view-pgp',
         'io.ox/mail/api'
     ], function (ext, api) {
 
-    "use strict";
+    'use strict';
 
     ext.point('io.ox/mail/detail').extend({
         index: 400,
