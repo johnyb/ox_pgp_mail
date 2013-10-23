@@ -3,15 +3,20 @@ define('pgp_mail/util', [
     'use strict';
 
     function isPGP(mail) {
-        return isEncrypted(mail);
+        return isEncrypted(mail) || isSigned(mail);
     }
 
     function isEncrypted(mail) {
         return mail.content_type === 'multipart/encrypted';
     }
 
+    function isSigned(mail) {
+        return mail.content_type === 'multipart/signed';
+    }
+
     return {
         isPGPMail: isPGP,
-        isEncryptedMail: isEncrypted
+        isEncryptedMail: isEncrypted,
+        isSignedMail: isSigned
     };
 });
