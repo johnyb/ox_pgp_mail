@@ -46,4 +46,16 @@ define('pgp_mail/view-pgp', [
 
         }
     });
+    ext.point('io.ox/mail/detail').extend({
+        index: 500,
+        id: 'signed_content',
+        draw: function (baton) {
+
+            if (!util.isSignedMail(baton.data)) {
+                return;
+            }
+
+            this.find('.content').addClass('signed');
+        }
+    });
 });
