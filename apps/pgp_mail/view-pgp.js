@@ -1,9 +1,7 @@
-define('pgp_mail/view-pgp',
-       ['io.ox/core/extensions',
-        'io.ox/mail/api'
-    ], function (ext, api) {
-
-
+define('pgp_mail/view-pgp', [
+    'io.ox/core/extensions',
+    'io.ox/mail/api'
+], function (ext, api) {
     'use strict';
 
     ext.point('io.ox/mail/detail/header').extend({
