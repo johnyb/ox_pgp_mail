@@ -14,7 +14,8 @@ define('pgp_mail/view-pgp', [
             }
             var filtered = baton.data.attachments.filter(function (attachment) {
                 return (/^application\/pgp-encrypted$/).test(attachment.content_type) ||
-                       (/^application\/octet-stream/).test(attachment.content_type);
+                       (/^application\/octet-stream/).test(attachment.content_type) ||
+                       (/^application\/pgp-signature/).test(attachment.content_type);
             });
 
             baton.data.attachment = false;
