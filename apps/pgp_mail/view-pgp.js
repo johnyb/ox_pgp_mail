@@ -1,14 +1,15 @@
 define('pgp_mail/view-pgp', [
     'io.ox/core/extensions',
-    'io.ox/mail/api'
-], function (ext, api) {
+    'io.ox/mail/api',
+    'pgp_mail/util'
+], function (ext, api, util) {
     'use strict';
 
     ext.point('io.ox/mail/detail/header').extend({
         before: 'attachments',
         id: 'filter_attachments',
         draw: function (baton) {
-            if (!baton.data.attachment || baton.data.content_type !== 'multipart/encrypted') {
+            if (!util.isPGPMail(baton.data)) {
                 return;
             }
             var filtered = baton.data.attachments.filter(function (attachment) {
@@ -27,7 +28,7 @@ define('pgp_mail/view-pgp', [
         id: 'encrypted_content',
         draw: function (baton) {
 
-            if (baton.data.content_type !== 'multipart/encrypted') {
+            if (!util.isEncryptedMail(baton.data)) {
                 return;
             }
             var data = _(baton.data.pgp_attachments).find(function (a) {
