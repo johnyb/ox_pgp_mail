@@ -1,7 +1,8 @@
 define('pgp_mail/view-pgp', [
     'io.ox/core/extensions',
     'io.ox/mail/api',
-    'pgp_mail/util'
+    'pgp_mail/util',
+    'less!pgp_mail/style.less'
 ], function (ext, api, util) {
     'use strict';
 
