@@ -38,10 +38,11 @@ define('pgp_mail/view-pgp', [
                 }),
                 node = this.find('.content');
 
+            node.addClass('encrypted');
             data.mail = baton.data;
             $.ajax({ url: api.getUrl(data, 'view'), dataType: 'text' }).done(function (text) {
                 node.empty().append(
-                    $('<pre class="encrypted">').html(text)
+                    $('<pre>').html(text)
                 );
             });
 
