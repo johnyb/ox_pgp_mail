@@ -2,8 +2,9 @@ define('pgp_mail/view-pgp', [
     'io.ox/core/extensions',
     'io.ox/mail/api',
     'pgp_mail/util',
+    'gettext!pgp_mail',
     'less!pgp_mail/style.less'
-], function (ext, api, util) {
+], function (ext, api, util, gt) {
     'use strict';
 
     ext.point('io.ox/mail/detail/header').extend({
@@ -22,6 +23,34 @@ define('pgp_mail/view-pgp', [
             baton.data.attachment = false;
             baton.data.attachments = _(baton.data.attachments).difference(filtered);
             baton.data.pgp_attachments = filtered;
+        }
+    });
+
+    ext.point('io.ox/mail/detail/header').extend({
+        id: 'pgp_info',
+        draw: function (baton) {
+            if (!util.isPGPMail(baton.data)) {
+                return;
+            }
+            var node = $('<div class="pgp-info">');
+
+            node.append(
+                $('<a href="#">')
+                .attr({
+                    'role': 'button'
+                })
+                .append(function () {
+                    var info = [];
+                    if (util.isSignedMail(baton.data)) {
+                        info.push($.txt(gt('This message is signed')));
+                    }
+                    if (util.isEncryptedMail(baton.data)) {
+                        info.push($.txt(gt('This message is encrypted')));
+                    }
+                    return info;
+                })
+            );
+            this.append(node);
         }
     });
 
