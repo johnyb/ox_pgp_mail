@@ -1,11 +1,15 @@
 define('pgp_mail/view-pgp', [
     'io.ox/core/extensions',
+    'io.ox/core/extPatterns/links',
+    'io.ox/core/extPatterns/actions',
     'io.ox/mail/api',
     'pgp_mail/util',
     'gettext!pgp_mail',
     'less!pgp_mail/style.less'
-], function (ext, api, util, gt) {
+], function (ext, links, actions, api, util, gt) {
     'use strict';
+
+    var Action = actions.Action;
 
     ext.point('io.ox/mail/detail/header').extend({
         before: 'attachments',
@@ -26,33 +30,48 @@ define('pgp_mail/view-pgp', [
         }
     });
 
-    ext.point('io.ox/mail/detail/header').extend({
+    new Action('io.ox/mail/actions/pgp_info', {
         id: 'pgp_info',
-        draw: function (baton) {
-            if (!util.isPGPMail(baton.data)) {
-                return;
-            }
-            var node = $('<div class="pgp-info">');
+        requires: function (e) {
+            return util.isPGPMail(e.baton.data);
+        },
+        action: function (baton) {
+            var mail = baton.data,
+                pgpInfo = util.getPGPInfo(mail);
 
-            node.append(
-                $('<a href="#">')
-                .attr({
-                    'role': 'button'
-                })
-                .append(function () {
-                    var info = [];
-                    if (util.isSignedMail(baton.data)) {
-                        info.push($.txt(gt('This message is signed')));
-                    }
-                    if (util.isEncryptedMail(baton.data)) {
-                        info.push($.txt(gt('This message is encrypted')));
-                    }
-                    return info;
-                })
-            );
-            this.append(node);
+            require(['io.ox/core/tk/dialogs'], function (dialogs) {
+                new dialogs.ModalDialog()
+                    .addPrimaryButton('close', gt('Close'))
+                    .header(
+                        $('<h4>').text(gt('PGP Info'))
+                    )
+                    .append(
+                        $('<div class="pgp-info">')
+                    )
+                    .show(function () {
+                        var self = this.busy();
+                        pgpInfo.done(function () {
+                            var node = self.find('.pgp-info');
+                            node.append(
+                                $('<div class="content-type">').append(
+                                    gt('Content Type'),
+                                    ': ',
+                                    mail.content_type
+                                )
+                            );
+                            self.idle();
+                        });
+                    });
+            });
         }
     });
+
+    ext.point('io.ox/mail/links/inline').extend(new links.Link({
+        id: 'pgp_info',
+        prio: 'lo',
+        label: gt('PGP Details'),
+        ref: 'io.ox/mail/actions/pgp_info'
+    }));
 
     ext.point('io.ox/mail/detail').extend({
         index: 400,

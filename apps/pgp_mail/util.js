@@ -14,9 +14,14 @@ define('pgp_mail/util', [
         return mail.content_type === 'multipart/signed';
     }
 
+    function getPGPInfo() {
+        return $.when();
+    }
+
     return {
         isPGPMail: isPGP,
         isEncryptedMail: isEncrypted,
-        isSignedMail: isSigned
+        isSignedMail: isSigned,
+        getPGPInfo: getPGPInfo
     };
 });
