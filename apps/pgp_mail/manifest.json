@@ -2,7 +2,7 @@
     title: "PGP Support",
     company: "",
     category: "mail",
-    namespace: 'core',
+    namespace: 'io.ox/mail/view-detail',
     settings: false,
     requires: "webmail",
     index: 100
