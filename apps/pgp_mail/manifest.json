@@ -1,10 +1,10 @@
 {
-    title: "PGP Support",
-    company: "",
-    category: "mail",
-    namespace: 'io.ox/mail/view-detail',
-    settings: false,
-    requires: "webmail",
-    index: 100
+    "title": "PGP Support",
+    "category": "mail",
+    "namespace": "io.ox/mail/view-detail",
+    "settings": false,
+    "requires": "webmail",
+    "path": "pgp_mail/register",
+    "index": 100
 }
 
