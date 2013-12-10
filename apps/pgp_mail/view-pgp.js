@@ -107,7 +107,12 @@ define('pgp_mail/view-pgp', [
                 return;
             }
 
-            this.find('.content').addClass('signed');
+            var contentNode = this.find('.content');
+
+            contentNode.addClass('signed');
+            if (util.isVerifiedMail(baton.data)) {
+                contentNode.addClass('verified');
+            }
         }
     });
 });
