@@ -64,14 +64,12 @@ define('pgp_mail/view-pgp', [
         }
     });
 
-    _.delay(function () {
-        ext.point('io.ox/mail/links/inline').extend(new links.Link({
-            id: 'pgp_info',
-            prio: 'lo',
-            label: gt('PGP Details'),
-            ref: 'io.ox/mail/actions/pgp_info'
-        }));
-    }, 100);
+    ext.point('io.ox/mail/links/inline').extend(new links.Link({
+        id: 'pgp_info',
+        prio: 'lo',
+        label: gt('PGP Details'),
+        ref: 'io.ox/mail/actions/pgp_info'
+    }));
 
     ext.point('io.ox/mail/detail/body').extend({
         before: 'encrypted_content',
