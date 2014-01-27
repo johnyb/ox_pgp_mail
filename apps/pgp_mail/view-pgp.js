@@ -107,11 +107,14 @@ define('pgp_mail/view-pgp', [
                 return;
             }
 
-            var contentNode = this.find('.content');
+            var contentNode = this.find('.content'),
+                verified = util.isVerifiedMail(baton.data);
 
             contentNode.addClass('signed');
-            if (util.isVerifiedMail(baton.data)) {
+            if (verified) {
                 contentNode.addClass('verified');
+            } else if (!verified) {
+                contentNode.addClass('verification-failed');
             }
         }
     });

@@ -24,7 +24,7 @@ define('pgp_mail/util', [
             data.mail = mail;
             $.ajax({ url: api.getUrl(data, 'view'), dataType: 'text' }).done(function (text) {
                 var msg = openpgp.read_message(text)[0];
-                msg.text = mail.attachments[0].content.replace(/<br>/g, '\n');
+                msg.text = mail.attachments[0].content.replace(/<br>/g, '\n') + '\n';
                 msg.verifySignature();
             });
         });
