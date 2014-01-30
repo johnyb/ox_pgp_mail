@@ -5,28 +5,26 @@ define('pgp_mail/view-pgp', [
     'io.ox/mail/api',
     'pgp_mail/util',
     'gettext!pgp_mail',
-    'less!pgp_mail/style.less'
+    'less!pgp_mail/style'
 ], function (ext, links, actions, api, util, gt) {
     'use strict';
 
     var Action = actions.Action;
 
-    ext.point('io.ox/mail/detail/header').extend({
-        before: 'attachments',
+    ext.point('io.ox/mail/detail/attachments').extend({
+        index: 1,
         id: 'filter_attachments',
         draw: function (baton) {
             if (!util.isPGPMail(baton.data)) {
                 return;
             }
-            var filtered = baton.data.attachments.filter(function (attachment) {
+            var filtered = baton.attachments.filter(function (attachment) {
                 return (/^application\/pgp-encrypted$/).test(attachment.content_type) ||
                        (/^application\/octet-stream/).test(attachment.content_type) ||
                        (/^application\/pgp-signature/).test(attachment.content_type);
             });
 
-            baton.data.attachment = false;
-            baton.data.attachments = _(baton.data.attachments).difference(filtered);
-            baton.data.pgp_attachments = filtered;
+            baton.attachments = _(baton.attachments).difference(filtered);
         }
     });
 
@@ -75,11 +73,27 @@ define('pgp_mail/view-pgp', [
         }));
     }, 100);
 
-    ext.point('io.ox/mail/detail').extend({
-        index: 400,
+    ext.point('io.ox/mail/detail/body').extend({
+        before: 'encrypted_content',
+        id: 'collect_pgp_attachments',
+        draw: function (baton) {
+            if (!util.isPGPMail(baton.data)) {
+                return;
+            }
+            var filtered = baton.data.attachments.filter(function (attachment) {
+                return (/^application\/pgp-encrypted$/).test(attachment.content_type) ||
+                       (/^application\/octet-stream/).test(attachment.content_type) ||
+                       (/^application\/pgp-signature/).test(attachment.content_type);
+            });
+
+            baton.data.pgp_attachments = filtered;
+        }
+    });
+
+    ext.point('io.ox/mail/detail/body').extend({
+        index: 1100,
         id: 'encrypted_content',
         draw: function (baton) {
-
             if (!util.isEncryptedMail(baton.data)) {
                 return;
             }
@@ -98,11 +112,10 @@ define('pgp_mail/view-pgp', [
 
         }
     });
-    ext.point('io.ox/mail/detail').extend({
-        index: 500,
+    ext.point('io.ox/mail/detail/body').extend({
+        index: 1200,
         id: 'signed_content',
         draw: function (baton) {
-
             if (!util.isSignedMail(baton.data)) {
                 return;
             }
