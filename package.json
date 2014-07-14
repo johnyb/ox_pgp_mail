@@ -1,15 +1,24 @@
 {
   "name": "ox-pgp-mail",
   "version": "0.0.1",
-  "dependencies": {
-  },
+  "repository": "https://github.com/johnyb/ox_pgp_mail.git",
+  "dependencies": {},
   "optionalDependencies": {
     "jshint": "Open-Xchange-Frontend/jshint#0ffee4a9ae",
-    "shared-grunt-config": "Open-Xchange-Frontend/shared-grunt-config#v0.5.2"
+    "shared-grunt-config": "Open-Xchange-Frontend/shared-grunt-config#v0.5.3"
   },
   "devDependencies": {
     "grunt-contrib-watch": "^0.6.1",
     "grunt-karma": "^0.8.2",
-    "grunt-contrib-connect": "^0.7.1"
+    "grunt-contrib-connect": "^0.7.1",
+    "mocha": "^1.20.1",
+    "karma-mocha": "^0.1.4",
+    "requirejs": "^2.1.14",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "chai": "^1.9.1",
+    "karma-chai": "^0.1.0",
+    "sinon": "^1.10.3",
+    "karma-sinon": "^1.0.3",
+    "karma-ox-ui": "^0.0.1"
   }
 }
