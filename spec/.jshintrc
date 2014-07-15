@@ -10,7 +10,7 @@
     "immed"         : true,    // true: Require immediate invocations to be wrapped in parens e.g. `(function () { } ());`,
     "quotmark"      : "single",
     "undef"         : true,
-    "unused"        : true,
+    "unused"        : false,
 
     // Relaxing
     "debug"         : true,    // true: Allow debugger statements e.g. browser breakpoints.
@@ -30,6 +30,8 @@
     // Legacy
     "white"         : true,    // true: Check against strict whitespace and indentation rules
 
+    "expr"          : true,
+
     // Custom Globals
     "globals": {
         "$": false,
@@ -41,6 +43,23 @@
         "requirejs": false,
         "assert": false,
         "include": false,
-        "Backbone": false
+        "doT": false,
+        "Backbone": false,
+        "BigScreen": false,
+        "MediaElementPlayer": false,
+        "tinyMCE": false,
+        "describe": false,
+        "it": false,
+        "beforeEach": false,
+        "afterEach": false,
+        "expect": false,
+        "waitsFor": false,
+        "runs": false,
+        "chai": false,
+        "sinon": false,
+        "spyOn": false,
+        "xit": false,
+        "xdescribe": false,
+        "jasmine": false
     }
 }
