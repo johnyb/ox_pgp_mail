@@ -3,7 +3,7 @@ define(['pgp_mail/util'], function(util) {
 
     describe('PGP Mail Utils', function () {
         it('should exist', function () {
-            expect(util).to.be.defined;
+            expect(util).to.exist;
         });
 
         describe('PGP mail detection (pgp/mime)', function () {
