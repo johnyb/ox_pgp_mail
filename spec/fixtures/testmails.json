@@ -1,0 +1,16 @@
+{
+    "encrypted_mail": {
+        "data": {
+            "attachments": [{
+                "content_type": "application/pgp-encrypted"
+            }, {
+                "id": 2,
+                "content_type": "application/octet-stream"
+            }],
+            "content_type": "multipart/encrypted"
+        }
+    },
+    "signed_mail": {
+    },
+    "encrypted_body": "-----BEGIN PGP MESSAGE-----\nVersion: Mailvelope v0.7.0b3\nComment: Email security by Mailvelope - http://www.mailvelope.com\nwcFMA+fmU+j9XjxxAQ/8DgJE4jgjGwlncwdDyrXx2x53IauY3LS+uHZESINI\nrK3JDd7q65lIzw3uUs8q7wuO0g9OZtx9cyPb9GFGYRHTLegOjQai6yI1ggYU\n6U02QKOwxGGDHOVRmWPW6H49kG+EcZ9OEDkSoqpinkQnw4H9pNgelw2vL5NO\nQauv3GH3f2up486TC7Pq7vPg8gSAF0sBqQmRgyrYHeKO3LcuM9wDyRZj1XZ7\nO64KOWlkbFLyrxNxK3Vkdrf1GFcZm8VYK6noNYjbEthX+99nT+I6zkwa66e7\nAwUA520vt6f6ftMw7znDzacbJldup7hr4ufYuoQ7NjKNvopZ1DC7nj5pDG9E\nTVFydbFcHM7PIQwc27H0yr9t4xLHfLvsPnIbPAP7hC+dMzl8bdLZoHt/vxCW\n+ZHwEqmA1Apg9RoJGpu5at5MVlivdji4/Akl8HEoQtAa7zzyMtYdC9BZS0hb\n2Rcu6vYAaJ0tapGySACWq8zQWRVDC+Rm2TC9FClaDs3EFVwNltzhmrAcBvIb\n/KHQv2YlgD6tU6z6zdhzSU45Xh/C1EzzRmwCloh21ButkobL648v79isOUGM\n+DGs3o11QFdbjkclXoWBJtUNArZbfhNu2wP/Am8+AblIxupYo5Cg+Vxym/I8\nxW3W5Za95uizxPeOz9QE5N6pkYrvn7s7K/q22RSWrbDSTQEGf8TkSq02CWqM\nhIRjVtxGb/GcM+VostcwsRGF5kyfF15e90VhDPxe/yVArrIqt497gDM2eebe\nMPer5kee25PBG/xsv6SKRqrvlrp7\n=xROJ\n-----END PGP MESSAGE-----"
+}
