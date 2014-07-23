@@ -106,7 +106,7 @@ define('pgp_mail/view-pgp', [
             data.mail = baton.data;
             $.ajax({ url: api.getUrl(data, 'view'), dataType: 'text' }).done(function (text) {
                 node.empty().append(
-                    $('<pre>').html(text)
+                    $('<pre>').text(text)
                 );
             });
 
