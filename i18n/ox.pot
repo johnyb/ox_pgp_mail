@@ -9,22 +9,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: apps/pgp_mail/view-pgp.js:44
+#: apps/pgp_mail/view-pgp.js:42
 #: module:pgp_mail
 msgid "Close"
 msgstr ""
 
-#: apps/pgp_mail/view-pgp.js:46
+#: apps/pgp_mail/view-pgp.js:44
 #: module:pgp_mail
 msgid "PGP Info"
 msgstr ""
 
-#: apps/pgp_mail/view-pgp.js:57
+#: apps/pgp_mail/view-pgp.js:55
 #: module:pgp_mail
 msgid "Content Type"
 msgstr ""
 
-#: apps/pgp_mail/view-pgp.js:73
+#: apps/pgp_mail/view-pgp.js:71
 #: module:pgp_mail
 msgid "PGP Details"
 msgstr ""

@@ -5,30 +5,25 @@ msgstr ""
 "PO-Revision-Date: 2014-07-14 12:21+0200\n"
 "Last-Translator: Julian Bäume\n"
 "Language-Team: German <>\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: de_DE\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: apps/pgp_mail/view-pgp.js:44
-#: module:pgp_mail
+#: apps/pgp_mail/view-pgp.js:42 module:pgp_mail
 msgid "Close"
 msgstr "Schließen"
 
-#: apps/pgp_mail/view-pgp.js:46
-#: module:pgp_mail
-msgid "PGP Info"
-msgstr "PGP Informationen"
-
-#: apps/pgp_mail/view-pgp.js:57
-#: module:pgp_mail
+#: apps/pgp_mail/view-pgp.js:55 module:pgp_mail
 msgid "Content Type"
 msgstr "Dateityp"
 
-#: apps/pgp_mail/view-pgp.js:73
-#: module:pgp_mail
+#: apps/pgp_mail/view-pgp.js:71 module:pgp_mail
 msgid "PGP Details"
 msgstr "PGP Details"
 
+#: apps/pgp_mail/view-pgp.js:44 module:pgp_mail
+msgid "PGP Info"
+msgstr "PGP Informationen"
