@@ -4,7 +4,7 @@
   "repository": "https://github.com/johnyb/ox_pgp_mail.git",
   "dependencies": {},
   "optionalDependencies": {
-    "open-xchange-shared-grunt-config": "^0.8.0"
+    "open-xchange-shared-grunt-config": "^0.10.0"
   },
   "devDependencies": {
     "grunt-contrib-watch": "^0.6.1",
