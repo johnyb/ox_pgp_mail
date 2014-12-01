@@ -7,17 +7,18 @@
     "open-xchange-shared-grunt-config": "^0.10.0"
   },
   "devDependencies": {
+    "appserver": "^0.4.0",
+    "chai": "^1.9.1",
+    "grunt-contrib-connect": "^0.7.1",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-karma": "^0.8.2",
-    "grunt-contrib-connect": "^0.7.1",
-    "mocha": "^1.20.1",
-    "karma-mocha": "^0.1.4",
-    "requirejs": "^2.1.14",
-    "karma-phantomjs-launcher": "^0.1.4",
-    "chai": "^1.9.1",
     "karma-chai": "^0.1.0",
-    "sinon": "^1.10.3",
+    "karma-mocha": "^0.1.4",
+    "karma-ox-ui": "^0.0.1",
+    "karma-phantomjs-launcher": "^0.1.4",
     "karma-sinon": "^1.0.3",
-    "karma-ox-ui": "^0.0.1"
+    "mocha": "^1.20.1",
+    "requirejs": "^2.1.14",
+    "sinon": "^1.10.3"
   }
 }
