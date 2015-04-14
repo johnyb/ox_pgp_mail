@@ -2,6 +2,9 @@
   "name": "ox-pgp-mail",
   "version": "0.0.1",
   "repository": "https://github.com/johnyb/ox_pgp_mail.git",
+  "scripts": {
+    "start": "grunt dev"
+  },
   "dependencies": {},
   "optionalDependencies": {
     "open-xchange-shared-grunt-config": "^0.10.2",
