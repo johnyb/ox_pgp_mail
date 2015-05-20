@@ -5,6 +5,10 @@
   "scripts": {
     "start": "grunt dev"
   },
+  "author": {
+    "name": "Julian Bäume",
+    "email": "julian@svg4all.de"
+  },
   "dependencies": {},
   "optionalDependencies": {
     "open-xchange-shared-grunt-config": "^0.11.3",
