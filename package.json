@@ -37,6 +37,7 @@
     "karma-ox-ui": "^0.1.1",
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-sinon": "^1.0.3",
+    "karma-spec-reporter": "0.0.19",
     "mocha": "^2.2.5",
     "requirejs": "^2.1.14",
     "sinon": "^1.10.3"
