@@ -1,0 +1,13 @@
+[{
+    "title": "mailvelope Support",
+    "category": "mail",
+    "namespace": "io.ox/mail/compose/main",
+    "settings": true,
+    "requires": "webmail",
+    "path": "mailvelope/main",
+    "index": 100
+},
+{
+    "namespace": "io.ox/settings/main",
+    "path": "mailvelope/settings/register"
+}]
