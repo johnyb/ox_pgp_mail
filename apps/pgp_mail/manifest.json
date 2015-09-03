@@ -3,7 +3,7 @@
     "category": "mail",
     "namespace": "io.ox/mail/view-detail",
     "settings": false,
-    "requires": "webmail",
+    "requires": ["webmail", "pgp_mail"],
     "path": "pgp_mail/register",
     "index": 100
 }

@@ -3,11 +3,12 @@
     "category": "mail",
     "namespace": "io.ox/mail/compose/main",
     "settings": true,
-    "requires": "webmail",
+    "requires": ["webmail", "mailvelope"],
     "path": "mailvelope/main",
     "index": 100
 },
 {
     "namespace": "io.ox/settings/main",
-    "path": "mailvelope/settings/register"
+    "path": "mailvelope/settings/register",
+    "requires": "mailvelope"
 }]
