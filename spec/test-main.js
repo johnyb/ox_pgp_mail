@@ -17,22 +17,22 @@ require(['io.ox/core/extPatterns/stage'], function (Stage) {
 
     'use strict';
 
-        ox.testUtils.stubAppsuiteBody();
+    ox.testUtils.stubAppsuiteBody();
 
-        new Stage('io.ox/core/stages', {
-            id: 'run_tests',
-            index: 99999,
-            run: function (baton) {
-                requirejs.config({
-                    // Karma serves files from '/base/apps'
-                    baseUrl: '/base/apps',
+    new Stage('io.ox/core/stages', {
+        id: 'run_tests',
+        index: 99999,
+        run: function (baton) {
+            requirejs.config({
+                // Karma serves files from '/base/apps'
+                baseUrl: '/base/apps',
 
-                    // ask Require.js to load these files (all our tests)
-                    deps: allTestFiles,
+                // ask Require.js to load these files (all our tests)
+                deps: allTestFiles,
 
-                    // start test run, once Require.js is done
-                    callback: window.__karma__.start
-                });
-            }
-        });
+                // start test run, once Require.js is done
+                callback: window.__karma__.start
+            });
+        }
+    });
 });
