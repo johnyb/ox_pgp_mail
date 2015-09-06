@@ -9,11 +9,11 @@ define('mailvelope/main', function () {
         }
 
         this.getKeyring = function getKeyring () {
-            if (typeof window.mailvelope === 'undefined') {
-                return loaded.then(getKeyring);
-            }
+            //make sure, we return jQuery Defered, not a ES6 Promise
             var def = $.Deferred();
-            window.mailvelope.getKeyring(ox.user).then(
+            loaded.then(function (mailvelope) {
+                return mailvelope.getKeyring(ox.user);
+            }).then(
                 function (keyring) {
                     return def.resolve(keyring);
                 },
@@ -26,6 +26,14 @@ define('mailvelope/main', function () {
             return def;
         };
 
+        this.createEditorContainer = function createEditorContainer (node, options) {
+            //make sure, we return jQuery Defered, not a ES6 Promise
+            var def = $.Deferred();
+            $.when(loaded, this.getKeyring()).then(function (mailvelope, keyring) {
+                return mailvelope.createEditorContainer(node, keyring, options);
+            }).then(def.resolve, def.reject);
+            return def;
+        };
 
         if (typeof window.mailvelope !== 'undefined') {
             loadMailvelope();
