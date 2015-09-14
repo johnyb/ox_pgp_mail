@@ -34,11 +34,19 @@ define('mailvelope/editor/main', [
             return '';
         };
 
+        function resizeEditor() {
+            node.css('min-height', Math.max(300, ($(window).height() - node.offset().top - $('#io-ox-topbar').height())));
+            node.find('iframe').css('min-height', node.height() - 5);
+        }
+
         this.show = function () {
+            $(window).on('resize.mailvelope', resizeEditor);
             node.show();
+            _.defer(resizeEditor);
         };
         this.hide = function () {
             node.hide();
+            $(window).off('resize.mailvelope', resizeEditor);
         };
 
         this.destroy = function () {
