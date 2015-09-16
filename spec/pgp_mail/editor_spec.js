@@ -97,6 +97,18 @@ define([
             it('should provide a destroy method', function () {
                 expect(editor.destroy).to.be.a('function');
             });
+
+            describe('extends io.ox/mail/compose/actions/send', function () {
+                var point = ext.point('io.ox/mail/compose/actions/send');
+
+                it('should add "send-mailvelope" action', function (done) {
+                    point.get('send-mailvelope', function (e) {
+                        expect(e).to.be.defined;
+                        expect(e.perform).to.be.a('function');
+                        done();
+                    });
+                });
+            });
         });
     });
 });
