@@ -8,31 +8,26 @@ define('mailvelope/main', function () {
             loaded.resolve(window.mailvelope);
         }
 
-        this.getKeyring = function getKeyring () {
-            //make sure, we return jQuery Defered, not a ES6 Promise
+        function fromPromise (promise) {
             var def = $.Deferred();
-            loaded.then(function (mailvelope) {
-                return mailvelope.getKeyring(ox.user);
-            }).then(
-                function (keyring) {
-                    return def.resolve(keyring);
-                },
-                function (err) {
-                    if (err.code !== 'NO_KEYRING_FOR_ID') return def.reject(err);
-
-                    return window.mailvelope.createKeyring(ox.user).then(def.resolve, def.reject);
-                }
-            );
+            promise.then(def.resolve, def.reject);
             return def;
+        }
+
+        this.getKeyring = function getKeyring () {
+            return loaded.then(function (mailvelope) {
+                return fromPromise(mailvelope.getKeyring(ox.user));
+            }).then(_.identity, function (err) {
+                if (err.code !== 'NO_KEYRING_FOR_ID') return $.Deferred().reject(err);
+
+                return fromPromise(window.mailvelope.createKeyring(ox.user));
+            });
         };
 
         this.createEditorContainer = function createEditorContainer (node, options) {
-            //make sure, we return jQuery Defered, not a ES6 Promise
-            var def = $.Deferred();
-            $.when(loaded, this.getKeyring()).then(function (mailvelope, keyring) {
-                return mailvelope.createEditorContainer(node, keyring, options);
-            }).then(def.resolve, def.reject);
-            return def;
+            return $.when(loaded, this.getKeyring()).then(function (mailvelope, keyring) {
+                return fromPromise(mailvelope.createEditorContainer(node, keyring, options));
+            });
         };
 
         if (typeof window.mailvelope !== 'undefined') {
