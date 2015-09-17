@@ -9,7 +9,9 @@
     "name": "Julian Bäume",
     "email": "julian@svg4all.de"
   },
-  "dependencies": {},
+  "dependencies": {
+    "mailbuild": "^0.3.7"
+  },
   "optionalDependencies": {
     "open-xchange-shared-grunt-config": "^0.12.0",
     "grunt": "^0.4.5",
