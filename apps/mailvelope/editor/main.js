@@ -66,11 +66,20 @@ define('mailvelope/editor/main', [
         mode: 'mailvelope'
     });
 
-    function Editor (container) {
+    function Editor (container, options) {
 
         var selector = '#' + container.data('editorId');
-        var node = $('<div>').attr({ id: container.data('editorId') });
+        var node = $('<div class="mailvelope-editor">').attr({ id: container.data('editorId') });
         container.append(node);
+        this.events = _.extend({}, Backbone.Events);
+
+        this.events.listenTo(options.model, 'change:editorMode', function (model, val) {
+            if (val !== 'mailvelope') return;
+
+            //update tokenfields
+            model.trigger('change:to', model, model.get('to'));
+            model.trigger('change:cc', model, model.get('cc'));
+        });
 
         var ready = $.Deferred();
         var editor = this;
@@ -130,6 +139,7 @@ define('mailvelope/editor/main', [
 
         this.destroy = function () {
             this.hide();
+            this.events.stopListening();
         };
 
         this.done = ready.done;

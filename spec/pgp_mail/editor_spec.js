@@ -55,7 +55,9 @@ define([
                 require.undef('mailvelope/editor/main');
                 var def = require(['mailvelope/editor/main']).then(function (Editor) {
                     $('body').append(editorNode);
-                    editor = new Editor(editorNode);
+                    editor = new Editor(editorNode, {
+                        model: new Backbone.Model()
+                    });
                 });
                 $(window).trigger('mailvelope');
                 return def;
