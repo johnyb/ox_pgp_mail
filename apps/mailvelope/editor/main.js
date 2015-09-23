@@ -2,8 +2,9 @@ define('mailvelope/editor/main', [
     'mailvelope/main',
     'io.ox/core/extensions',
     'pgp_mail/util',
+    'pgp_mail/keyring',
     'gettext!pgp_mail'
-], function (api, ext, utils, gt) {
+], function (api, ext, utils, Keyring, gt) {
 
     var extensionsNeeded = ext.point('io.ox/mail/compose/actions/send').filter(function (p) {
         if (p.id === 'errors' ||
@@ -57,6 +58,40 @@ define('mailvelope/editor/main', [
                     });
                 }
             });
+        }
+    });
+
+    ext.point('pgp_mail/keyring/lookup').extend({
+        id: 'mailvelope',
+        action: function (baton) {
+            var model = this;
+            api.getKeyring().then(function (keyring) {
+                var def = $.Deferred();
+                keyring.validKeyForAddress([baton.email]).then(def.resolve, def.reject);
+                return def;
+            }).then(function (result) {
+                if (!(result && result[baton.email])) return;
+
+                //we trust everything from mailvelope
+                model.addKey(_.extend({ trusted: true }, result[baton.email]));
+            });
+        }
+    });
+
+    ext.point('io.ox/mail/compose/createtoken').extend({
+        id: 'mailvelope-token',
+        action: function (baton) {
+            if (baton.model.get('editorMode') !== 'mailvelope') return;
+
+            var email = baton.event.attrs.model.get('token').value;
+            var target = $(baton.event.relatedTarget);
+            var view = new Keyring.recipients.View({
+                model: new Keyring.recipients.Model({
+                    email: email
+                })
+            });
+
+            target.find('.close').before(view.render().$el);
         }
     });
 
