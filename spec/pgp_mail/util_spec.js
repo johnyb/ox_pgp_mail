@@ -90,6 +90,16 @@ define([
                 var node = mb._childNodes[1];
                 expect(node.content).to.contain('Example content 1337');
             });
+
+            it('should handle encoding to UTF8 correctly', function () {
+                var mail = new MailModel();
+                mail.set('from', [['Drescher, Mäh', 'maeh.drescher@landmaschi.ne']]);
+                var mb = util.builder.fromModel(mail);
+                var mime = mb.build();
+                //expect(mime).to.contain('From: =?UTF-8?Q?Drescher=2C_M=C3=A4h?= <maeh.drescher@landmaschi.ne>');
+                //FIXME: remove workaround for mailbuild library
+                expect(mime).to.contain('From: =?UTF-8?B?RHJlc2NoZXIsIE3DpGg=?= <maeh.drescher@landmaschi.ne>');
+            });
         });
     });
 });

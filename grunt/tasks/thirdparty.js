@@ -15,10 +15,13 @@ module.exports = function (grunt) {
                 footer: 'return this;\n}.bind(root));',
                 process: function (src, file) {
                     //FIXME: remove this function, once mailbuild@>0.3.6 is released (see https://github.com/whiteout-io/mailbuild/pull/15)
+                    //HACK: HACK HACK HACK
                     if (file !== 'node_modules/mailbuild/src/mailbuild.js') return src;
 
                     return src.replace(/root.mailbuild = factory\(mimefuncs, mimetypes, punycode, addressparser\);/,
-                                       'root.mailbuild = factory(root.mimefuncs, root.mimetypes, root.punycode, root.addressparser);');
+                                       'root.mailbuild = factory(root.mimefuncs, root.mimetypes, root.punycode, root.addressparser);')
+                              .replace(/return mimefuncs.mimeWordEncode\(name, 'Q', 52\);/,
+                                       'return mimefuncs.mimeWordEncode(name, "B", 52);');
                 }
             },
             files: [{
