@@ -38,6 +38,18 @@ define([
                 expect(v.$el.find('.fa.fa-key.key-found').length).to.equal(1);
                 v.remove();
             });
+
+            it('optionally renders the email', function () {
+                var v = new Keyring.recipients.View({
+                    model: new Keyring.recipients.Model({
+                        email: 'jan.doe@example.com'
+                    }),
+                    renderAddress: true
+                });
+                v.render();
+                expect(v.$el.find('.email').text()).to.equal('jan.doe@example.com');
+                v.remove();
+            });
         });
 
         describe('recipients model', function () {

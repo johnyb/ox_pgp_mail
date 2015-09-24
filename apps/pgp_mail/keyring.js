@@ -28,7 +28,8 @@ define('pgp_mail/keyring', [
     });
 
     var RecipientView = Backbone.View.extend({
-        initialize: function () {
+        initialize: function (opt) {
+            this.renderAddress = opt.renderAddress;
             this.listenTo(this.model, 'change:keys', function () {
                 this.render();
             });
@@ -37,12 +38,16 @@ define('pgp_mail/keyring', [
         className: 'recipient-state',
         render: function () {
             var state = $('<i class="fa fa-key">');
+            var address = '';
+            if (this.renderAddress) {
+                address = $('<span class="email">').text(this.model.get('email'));
+            }
             state.toggleClass('key-found', this.model.get('keys').length > 0);
             var trusted = this.model.get('keys').reduce(function (acc, key) {
                 return acc || key.trusted === true;
             }, false);
             state.toggleClass('trusted', trusted);
-            this.$el.empty().append(state);
+            this.$el.empty().append(address, state);
             return this;
         }
     });
