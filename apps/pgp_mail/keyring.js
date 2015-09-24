@@ -1,5 +1,6 @@
 define('pgp_mail/keyring', [
-    'io.ox/core/extensions'
+    'io.ox/core/extensions',
+    'less!pgp_mail/style'
 ], function (ext) {
     'use strict';
 
@@ -32,7 +33,8 @@ define('pgp_mail/keyring', [
                 this.render();
             });
         },
-        class: 'recipient-state',
+        tagName: 'span',
+        className: 'recipient-state',
         render: function () {
             var state = $('<i class="fa fa-key">');
             state.toggleClass('key-found', this.model.get('keys').length > 0);

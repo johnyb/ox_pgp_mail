@@ -5,3 +5,19 @@ li.mail-detail {
         width: auto;
     }
 }
+
+.token .recipient-state {
+    display: inline-block;
+    padding-left: 4px;
+    vertical-align: top;
+
+    .trusted {
+        color: @green;
+    }
+    i:not(.key-found):before {
+        content: '\f234';//fa-user-plus
+    }
+    i.key-found:before {
+        content: '\f084';//fa-key
+    }
+}
