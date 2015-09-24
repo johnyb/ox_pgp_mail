@@ -16,6 +16,30 @@ define([
             }
         });
 
+        describe('recipients views', function () {
+            it('should render information that no key is available', function () {
+                var v = new Keyring.recipients.View({
+                    model: new Keyring.recipients.Model()
+                });
+                v.render();
+                expect(v.$el).to.be.defined;
+                expect(v.$el.find('.fa.fa-key:not(.key-found)').length).to.equal(1);
+                v.remove();
+            });
+
+            it('should render information that key is available', function () {
+                var v = new Keyring.recipients.View({
+                    model: new Keyring.recipients.Model()
+                });
+                v.render();
+                expect(v.$el).to.be.defined;
+                expect(v.$el.find('.fa.fa-key.key-found').length).to.equal(0);
+                v.model.set('email', 'jan.doe@example.com');
+                expect(v.$el.find('.fa.fa-key.key-found').length).to.equal(1);
+                v.remove();
+            });
+        });
+
         describe('recipients model', function () {
             var model;
 

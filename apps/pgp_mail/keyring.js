@@ -25,7 +25,28 @@ define('pgp_mail/keyring', [
             ext.point('pgp_mail/keyring/lookup').invoke('action', model, baton);
         }
     });
+
+    var RecipientView = Backbone.View.extend({
+        initialize: function () {
+            this.listenTo(this.model, 'change:keys', function () {
+                this.render();
+            });
+        },
+        class: 'recipient-state',
+        render: function () {
+            var state = $('<i class="fa fa-key">');
+            state.toggleClass('key-found', this.model.get('keys').length > 0);
+            var trusted = this.model.get('keys').reduce(function (acc, key) {
+                return acc || key.trusted === true;
+            }, false);
+            state.toggleClass('trusted', trusted);
+            this.$el.empty().append(state);
+            return this;
+        }
+    });
+
     var recipients = {
+        View: RecipientView,
         Model: RecipientModel
     };
 
