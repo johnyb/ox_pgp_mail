@@ -108,14 +108,6 @@ define('mailvelope/editor/main', [
         container.append(node);
         this.events = _.extend({}, Backbone.Events);
 
-        this.events.listenTo(options.model, 'change:editorMode', function (model, val) {
-            if (val !== 'mailvelope') return;
-
-            //update tokenfields
-            model.trigger('change:to', model, model.get('to'));
-            model.trigger('change:cc', model, model.get('cc'));
-        });
-
         var ready = $.Deferred();
         var editor = this;
         var mailvelope;
@@ -163,11 +155,20 @@ define('mailvelope/editor/main', [
         }
 
         this.show = function () {
+            //update tokenfields
+            var model = options.model;
+            model.trigger('change:to', model, model.get('to'));
+            model.trigger('change:cc', model, model.get('cc'));
+
             $(window).on('resize.mailvelope', resizeEditor);
             node.show();
             _.defer(resizeEditor);
         };
         this.hide = function () {
+            //update tokenfields
+            var model = options.model;
+            options.model.trigger('change:to', model, model.get('to'));
+            options.model.trigger('change:cc', model, model.get('cc'));
             node.hide();
             $(window).off('resize.mailvelope', resizeEditor);
         };
