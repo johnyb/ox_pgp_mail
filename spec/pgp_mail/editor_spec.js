@@ -48,7 +48,7 @@ define([
                 window.mailvelope.createEditorContainer = function (selector) {
                     var node = $(selector);
                     node.append($('<iframe>'));
-                    return $.when(editor);
+                    return $.when(window.mailvelope);
                 };
 
                 require.undef('mailvelope/main');
@@ -102,14 +102,87 @@ define([
 
             describe('extends io.ox/mail/compose/actions/send', function () {
                 var point = ext.point('io.ox/mail/compose/actions/send');
+                var extension, baton;
 
-                it('should add "send-mailvelope" action', function (done) {
+                beforeEach(function (done) {
+                    baton = new ext.Baton({
+                        model: new Backbone.Model({
+                            editorMode: 'mailvelope',
+                            to: [['James Kirk', 'captain@enterprise']],
+                            cc: [['Leonard McCoy', 'bones@enterprise']],
+                            bcc: [['NSA', 'spy@starfleet']]
+                        }),
+                        view: {
+                            getEditor: function () {
+                                return $.when(editor);
+                            }
+                        }
+                    });
+
+                    baton.model.setContent = function (text) {
+                        expect(text).to.equal('Some example text from mailvelope');
+                    };
+                    baton.model.getContent = function (text) {
+                        return 'Some example text from mailvelope';
+                    };
+
                     point.get('send-mailvelope', function (e) {
-                        expect(e).to.be.defined;
-                        expect(e.perform).to.be.a('function');
+                        extension = e;
                         done();
                     });
                 });
+                afterEach(function () {
+                    extension = undefined;
+                    baton = undefined;
+                });
+
+                it('should add "send-mailvelope" action', function () {
+                    expect(extension).to.be.defined;
+                    expect(extension.perform).to.be.a('function');
+                });
+
+                //do not run in PhantomJS, since it does not provide TextEncode/TextDecode API
+                if (_.device('PhantomJS')) return;
+                it('should encrypt for all recipients', function () {
+                    window.mailvelope.encrypt = function (recipients) {
+                        expect(recipients).to.contain('captain@enterprise');
+                        expect(recipients).to.contain('bones@enterprise');
+                        expect(recipients).not.to.contain('spy@starfleet');
+                        return $.when('Some example text from mailvelope');
+                    };
+
+                    return extension.perform(baton);
+                });
+
+                it('should fail when encryption is not possible', function () {
+                    window.mailvelope.encrypt = function (recipients) {
+                        expect(recipients).to.contain('captain@enterprise');
+                        expect(recipients).to.contain('bones@enterprise');
+                        expect(recipients).not.to.contain('spy@starfleet');
+                        return $.Deferred().reject({ message: 'undefined example error' });
+                    };
+
+                    ext.point('io.ox/mail/compose/actions/send').extend({
+                        id: 'errors',
+                        perform: function (baton) {
+                            expect(baton.error).to.equal('undefined example error');
+                            return $.when();
+                        }
+                    });
+
+                    return extension.perform(baton).then(_.identity, function () {
+                        expect(baton.isPropagationStopped(), 'point propagation is stopped').to.be.true;
+                        //yes, we are good!
+                        return $.when();
+                    });
+                });
+            });
+
+            describe('key status extension for tokenfield', function () {
+                //TODO: implement me, once this feature gets ironed out
+                it('should indicate, that a key is known');
+
+                it('should indicate, that a key is not known');
             });
         });
     });

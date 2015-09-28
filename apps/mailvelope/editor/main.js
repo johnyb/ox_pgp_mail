@@ -21,7 +21,6 @@ define('mailvelope/editor/main', [
         var mimeBuilder = utils.builder.fromModel(mail);
         var requestBody = mimeBuilder.build();
         return require(['io.ox/core/http']).then(function (http) {
-            console.log('sending', requestBody);
             return http.PUT({
                 module: 'mail',
                 params: { action: 'new', timestamp: _.then() },
@@ -57,6 +56,15 @@ define('mailvelope/editor/main', [
                         });
                     });
                 }
+            }, function (result) {
+                var def = $.Deferred();
+                if (result && result.message) baton.error = result.message;
+                baton.stopPropagation();
+                ext.point('io.ox/mail/compose/actions/send').get('errors', function (p) {
+                    p.perform(baton);
+                    def.resolve();
+                });
+                return def;
             });
         }
     });
