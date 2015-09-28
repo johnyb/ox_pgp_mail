@@ -13,7 +13,7 @@ define('pgp_mail/view-pgp', [
 
     ext.point('io.ox/mail/detail/attachments').extend({
         index: 1,
-        id: 'filter_attachments',
+        id: 'filter_pgp_attachments',
         draw: function (baton) {
             if (!util.isPGPMail(baton.data)) {
                 return;
@@ -88,6 +88,13 @@ define('pgp_mail/view-pgp', [
         }
     });
 
+    ext.point('pgp_mail/detail/encrypted').extend({
+        index: 'last',
+        draw: function (baton) {
+            this.append(baton.encrypted_content);
+        }
+    });
+
     ext.point('io.ox/mail/detail/body').extend({
         index: 1100,
         id: 'encrypted_content',
@@ -102,12 +109,18 @@ define('pgp_mail/view-pgp', [
 
             node.addClass('encrypted');
             data.mail = baton.data;
-            $.ajax({ url: api.getUrl(data, 'view'), dataType: 'text' }).done(function (text) {
-                node.empty().append(
-                    $('<pre>').text(text)
-                );
+            $.ajax({ url: api.getUrl(data, 'view'), dataType: 'text' }).then(function (text) {
+                baton.encrypted_content = text;
+                node.empty();
+                ext.point('pgp_mail/detail/encrypted').reduce(function (def, p) {
+                    if (!def || !def.then) def = $.when(def);
+                    return def.then(function () {
+                        if (baton.isPropagationStopped()) return;
+                        if (baton.isDisabled('pgp_mail/detail/encrypted', p.id)) return;
+                        return p.draw.apply(node, [baton]);
+                    });
+                }, $.when());
             });
-
         }
     });
     ext.point('io.ox/mail/detail/body').extend({

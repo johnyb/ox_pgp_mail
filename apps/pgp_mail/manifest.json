@@ -1,9 +1,9 @@
 {
     "title": "PGP Support",
     "category": "mail",
-    "namespace": "io.ox/mail/view-detail",
+    "namespace": "io.ox/mail/detail/view",
     "settings": false,
-    "requires": ["webmail", "pgp_mail"],
+    "requires": ["webmail", "pgp_mail || mailvelope"],
     "path": "pgp_mail/register",
     "index": 100
 }
