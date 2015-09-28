@@ -125,8 +125,7 @@ define('mailvelope/editor/main', [
 
             recipients = recipients.concat(
                 (model.get('to') || []).map(getMailAddress),
-                (model.get('cc') || []).map(getMailAddress),
-                (model.get('bcc') || []).map(getMailAddress)
+                (model.get('cc') || []).map(getMailAddress)
             );
 
             var def = $.Deferred();
