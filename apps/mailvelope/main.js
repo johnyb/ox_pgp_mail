@@ -30,6 +30,12 @@ define('mailvelope/main', function () {
             });
         };
 
+        this.createDisplayContainer = function createDisplayContainer (selector, armoredText, options) {
+            return $.when(loaded, this.getKeyring()).then(function (mailvelope, keyring) {
+                return fromPromise(mailvelope.createDisplayContainer(selector, armoredText, keyring, options));
+            });
+        };
+
         if (typeof window.mailvelope !== 'undefined') {
             loadMailvelope();
         } else {

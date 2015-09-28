@@ -8,6 +8,11 @@
     "index": 100
 },
 {
+    "namespace": "io.ox/mail/detail/view",
+    "path": "mailvelope/view-detail",
+    "requires": ["webmail", "mailvelope"]
+},
+{
     "namespace": "io.ox/settings/main",
     "path": "mailvelope/settings/register",
     "requires": "mailvelope"
