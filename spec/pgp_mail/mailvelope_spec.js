@@ -71,6 +71,39 @@ define(function () {
                     expect(keyring.id).to.equal('jan.doe');
                 });
             });
+
+            it('should provide a createEditorContainer method', function () {
+                var api = require('mailvelope/main');
+                mailvelopeAPI.createEditorContainer = function (selector, keyring, options) {
+                    expect(selector).to.equal('#my_element');
+                    expect(keyring.id).to.equal('jan.doe');
+                    expect(options.sampleOption).to.be.true;
+                    return $.when({ id: 'test' });
+                };
+                mailvelopeAPI.getKeyring = function (id) {
+                    return $.Deferred().resolve({ id: id });
+                };
+                return api.createEditorContainer('#my_element', { sampleOption: true }).then(function (editor) {
+                    expect(editor).to.exist;
+                });
+            });
+
+            it('should provide a createDisplayContainer method', function () {
+                var api = require('mailvelope/main');
+                mailvelopeAPI.createDisplayContainer = function (selector, armoredText, keyring, options) {
+                    expect(selector).to.equal('#my_element');
+                    expect(armoredText).to.equal('some PGP text');
+                    expect(keyring.id).to.equal('jan.doe');
+                    expect(options.sampleOption).to.be.true;
+                    return $.when();
+                };
+                mailvelopeAPI.getKeyring = function (id) {
+                    return $.Deferred().resolve({ id: id });
+                };
+                return api.createDisplayContainer('#my_element', 'some PGP text', { sampleOption: true }).then(function (editor) {
+                    expect(editor).to.be.undefined;
+                });
+            });
         });
     });
 });
