@@ -104,6 +104,39 @@ define(function () {
                     expect(editor).to.be.undefined;
                 });
             });
+
+            it('should create only one unique display container if called multiple times in a short interval', function () {
+                var api = require('mailvelope/main');
+                var def = $.Deferred();
+                var spy = sinon.spy();
+                mailvelopeAPI.createDisplayContainer = function (selector, armoredText, keyring, options) {
+                    spy();
+                    expect(selector).to.equal('#my_element');
+                    expect(armoredText).to.equal('some PGP text');
+                    expect(keyring.id).to.equal('jan.doe');
+                    expect(options.sampleOption).to.be.true;
+                    return def;
+                };
+                mailvelopeAPI.getKeyring = function (id) {
+                    return $.Deferred().resolve({ id: id });
+                };
+
+                var def1 = api.createDisplayContainer('#my_element', 'some PGP text', { sampleOption: true });
+                var def2 = api.createDisplayContainer('#my_element', 'some PGP text', { sampleOption: true });
+
+                expect(def1).to.equal(def2);
+                expect(spy.calledOnce, 'mailvelopeAPI.createDisplayContainer called once').to.be.true;
+
+
+                return def.resolve().then(function () {
+                    expect(def1.state()).to.equal('resolved');
+                    expect(def2.state()).to.equal('resolved');
+
+                    return api.createDisplayContainer('#my_element', 'some PGP text', { sampleOption: true });
+                }).then(function () {
+                    expect(spy.calledTwice, 'mailvelopeAPI.createDisplayContainer called twice').to.be.true;
+                });
+            });
         });
     });
 });
