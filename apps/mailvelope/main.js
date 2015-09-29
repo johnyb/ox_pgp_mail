@@ -32,14 +32,17 @@ define('mailvelope/main', function () {
 
         var hash = {};
         this.createDisplayContainer = function createDisplayContainer (selector, armoredText, options) {
-            if (hash[selector]) return hash[selector];
+            if (hash[selector] && (_.now() - hash[selector].timestamp < 5000)) return hash[selector].def;
 
-            hash[selector] = $.when(loaded, this.getKeyring()).then(function (mailvelope, keyring) {
+            hash[selector] = {
+                timestamp: _.now()
+            };
+            hash[selector].def = $.when(loaded, this.getKeyring()).then(function (mailvelope, keyring) {
                 return fromPromise(mailvelope.createDisplayContainer(selector, armoredText, keyring, options));
-            }).always(function () {
+            });
+            return hash[selector].def.always(function () {
                 delete hash[selector];
             });
-            return hash[selector];
         };
 
         if (typeof window.mailvelope !== 'undefined') {
