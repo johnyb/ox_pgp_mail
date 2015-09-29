@@ -26,12 +26,28 @@ define([
             expect(plugins).not.to.be.empty;
         });
 
-        it('should extend the list of editors available for mail compose', function (done) {
-            var pointDefined = ext.point('io.ox/mail/compose/editors').has('mailvelope');
+        it('should add the lock item to mail compose fields', function (done) {
+            var pointDefined = ext.point('io.ox/mail/compose/fields').has('toggle-encryption');
             expect(pointDefined).to.be.true;
-            ext.point('io.ox/mail/compose/editors').get('mailvelope', function (p) {
-                expect(p.label, 'a label for the menu').to.exist;
-                expect(p.mode, 'editor mode').to.equal('mailvelope');
+            ext.point('io.ox/mail/compose/fields').get('toggle-encryption', function (p) {
+                expect(p.draw, 'draw method').to.be.a('function');
+                done();
+            });
+        });
+
+        it('should register editorMode/encrypt event handlers for mail compose view/model', function (done) {
+            ext.point('io.ox/mail/compose/fields').get('toggle-mailvelope', function (p) {
+                expect(p.draw, 'draw method').to.be.a('function');
+                var baton = new ext.Baton({
+                    view: new Backbone.View(),
+                    model: new Backbone.Model({
+                        editorMode: 'text'
+                    })
+                });
+                baton.view.model = baton.model;
+                p.draw(baton);
+                baton.model.set('encrypt', true);
+                expect(baton.model.get('editorMode')).to.equal('mailvelope');
                 done();
             });
         });

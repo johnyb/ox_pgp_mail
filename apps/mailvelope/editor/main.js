@@ -3,8 +3,9 @@ define('mailvelope/editor/main', [
     'io.ox/core/extensions',
     'pgp_mail/util',
     'pgp_mail/keyring',
-    'gettext!pgp_mail'
-], function (api, ext, utils, Keyring, gt) {
+    'pgp_mail/toggle-encryption',
+    'settings!io.ox/mail'
+], function (api, ext, utils, Keyring, ToggleEncryption, mailSettings) {
 
     var extensionsNeeded = ext.point('io.ox/mail/compose/actions/send').filter(function (p) {
         if (p.id === 'errors' ||
@@ -103,10 +104,43 @@ define('mailvelope/editor/main', [
         }
     });
 
-    ext.point('io.ox/mail/compose/editors').extend({
-        id: 'mailvelope',
-        label: gt('Mailvelope'),
-        mode: 'mailvelope'
+    ext.point('io.ox/mail/compose/fields').extend({
+        id: 'toggle-encryption',
+        index: 'last',
+        draw: function (baton) {
+            var node = this.find('.row.sender');
+            var view = new ToggleEncryption.View({
+                model: baton.model
+            });
+            //HACK: always insert first, since we do not control
+            //other content
+            node.prepend(view.render().$el);
+        }
+    });
+
+    ext.point('io.ox/mail/compose/fields').extend({
+        id: 'toggle-mailvelope',
+        draw: function (baton) {
+            //FIXME: find a better way to switch editorMode if encrypt flag changed
+            var oldMode = baton.model.get('editorMode');
+            //oldMode should never be mailvelope, since this is used if encryption is removed
+            if (oldMode === 'mailvelope') oldMode = mailSettings.get('messageFormat');
+            //default setting is mailvelope? Use text instead.
+            if (oldMode === 'mailvelope') oldMode = 'text';
+
+            baton.view.listenTo(baton.model, 'change:encrypt', function (model, val) {
+                if (val === true) {
+                    model.set('editorMode', 'mailvelope');
+                } else {
+                    model.set('editorMode', oldMode);
+                }
+            });
+            baton.view.listenTo(baton.model, 'change:editorMode', function (model, val) {
+                //remember last mode, that is not mailvelope
+                if (val !== 'mailvelope') oldMode = val;
+                model.set('encrypt', val === 'mailvelope');
+            });
+        }
     });
 
     function Editor (container, options) {
