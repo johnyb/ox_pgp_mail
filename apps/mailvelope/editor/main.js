@@ -153,7 +153,37 @@ define('mailvelope/editor/main', [
         var ready = $.Deferred();
         var editor = this;
         var mailvelope;
-        api.createEditorContainer(selector).then(function (ed) {
+        var setupComplete = $.Deferred();
+
+        //ensure mailvelope has a public/private key-pair, or trigger the setup wizard
+        api.getKeyring().then(function (keyring) {
+            var from = options.model.get('from');
+            var def = $.Deferred();
+            var email = _.isArray(from) && _.isArray(from[0]) && from[0][1];
+            if (!email) return def.reject({ code: 'UNKNOWN_SENDER' });
+            keyring.exportOwnPublicKey(email).then(def.resolve, def.reject);
+            return def;
+        }).then(function (key) {
+            if (key) setupComplete.resolve();
+        }, function (err) {
+            if (err && err.code === 'NO_KEY_FOR_ADDRESS') {
+                //not handled by API, but we need a key, here
+                api.trigger('setupNeeded', 'no keypair');
+            }
+        });
+        this.events.listenTo(api, 'setupNeeded', function () {
+            require(['mailvelope/tour'], function (runTour) {
+                runTour().then(setupComplete.resolve, setupComplete.reject);
+            });
+        });
+
+        setupComplete.then(function () {
+            editor.events.stopListening(api, 'setupNeeded');
+            return api.createEditorContainer(selector);
+        }, function () {
+            editor.events.stopListening(api, 'setupNeeded');
+            options.model.set('encrypt', false);
+        }).then(function (ed) {
             mailvelope = ed;
             ready.resolve(editor);
         });

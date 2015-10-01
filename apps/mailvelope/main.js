@@ -4,6 +4,8 @@ define('mailvelope/main', function () {
     function Mailvelope () {
         var loaded = this.loaded = $.Deferred();
 
+        _.extend(this, Backbone.Events);
+
         function loadMailvelope () {
             loaded.resolve(window.mailvelope);
         }
@@ -16,7 +18,9 @@ define('mailvelope/main', function () {
 
         this.getKeyring = function getKeyring () {
             var def = $.Deferred();
+            var self = this;
             var timeout = window.setTimeout(function () {
+                self.trigger('setupNeeded', 'timeout');
                 def.reject({
                     code: 'TIMEOUT'
                 });
@@ -28,6 +32,7 @@ define('mailvelope/main', function () {
             }).then(_.identity, function (err) {
                 if (err.code !== 'NO_KEYRING_FOR_ID') return $.Deferred().reject(err);
 
+                self.trigger('setupNeeded', 'no keyring');
                 return fromPromise(window.mailvelope.createKeyring(ox.user));
             }).then(def.resolve, def.reject);
             return def;

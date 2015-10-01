@@ -59,7 +59,15 @@ define([
             beforeEach(function () {
                 window.mailvelope = {};
                 window.mailvelope.getKeyring = function (id) {
-                    return $.when({ id: id });
+                    return $.when({
+                        id: id,
+                        exportOwnPublicKey: function (email) {
+                            if (email === 'jan.doe@example.com') return $.when('the public key of jan.doe');
+                            return $.Deferred().reject({
+                                code: 'NO_KEY_FOR_ADDRESS'
+                            });
+                        }
+                    });
                 };
                 window.mailvelope.createEditorContainer = function (selector) {
                     var node = $(selector);
@@ -72,7 +80,9 @@ define([
                 var def = require(['mailvelope/editor/main']).then(function (Editor) {
                     $('body').append(editorNode);
                     editor = new Editor(editorNode, {
-                        model: new Backbone.Model()
+                        model: new Backbone.Model({
+                            from: [['Jan Doe', 'jan.doe@example.com']]
+                        })
                     });
                 });
                 $(window).trigger('mailvelope');
@@ -124,6 +134,7 @@ define([
                     baton = new ext.Baton({
                         model: new Backbone.Model({
                             editorMode: 'mailvelope',
+                            from: [['Jan Doe', 'jan.doe@example.com']],
                             to: [['James Kirk', 'captain@enterprise']],
                             cc: [['Leonard McCoy', 'bones@enterprise']],
                             bcc: [['NSA', 'spy@starfleet']]
