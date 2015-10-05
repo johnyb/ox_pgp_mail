@@ -10,13 +10,28 @@ define(function () {
         });
 
         describe('window.mailvelope not available', function () {
+            var clock;
             beforeEach(function () {
+                clock = undefined;
                 return require(['mailvelope/main']);
             });
-
+            afterEach(function () {
+                if (clock) clock.restore();
+            });
 
             it('should not call init method without mailvelope event', function () {
                 var api = require('mailvelope/main');
+                expect(api.loaded.state()).to.equal('pending');
+            });
+            it('should timeout after 2s', function () {
+                var api = require('mailvelope/main');
+                clock = sinon.useFakeTimers();
+                var def = api.getKeyring();
+                clock.tick(1999);
+                expect(def.state()).to.equal('pending');
+                expect(api.loaded.state()).to.equal('pending');
+                clock.tick(1);
+                expect(def.state()).to.equal('rejected');
                 expect(api.loaded.state()).to.equal('pending');
             });
             it('should handle the mailvelope event', function () {

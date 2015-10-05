@@ -15,13 +15,22 @@ define('mailvelope/main', function () {
         }
 
         this.getKeyring = function getKeyring () {
-            return loaded.then(function (mailvelope) {
+            var def = $.Deferred();
+            var timeout = window.setTimeout(function () {
+                def.reject({
+                    code: 'TIMEOUT'
+                });
+            }, 2000);
+
+            loaded.then(function (mailvelope) {
+                window.clearTimeout(timeout);
                 return fromPromise(mailvelope.getKeyring(ox.user));
             }).then(_.identity, function (err) {
                 if (err.code !== 'NO_KEYRING_FOR_ID') return $.Deferred().reject(err);
 
                 return fromPromise(window.mailvelope.createKeyring(ox.user));
-            });
+            }).then(def.resolve, def.reject);
+            return def;
         };
 
         this.createEditorContainer = function createEditorContainer (node, options) {
